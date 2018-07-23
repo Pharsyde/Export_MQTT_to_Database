@@ -17,18 +17,16 @@ def on_subscribe(client, userdata, mid, granted_qos):
     print("Subscribed: " + str(mid) + " " + str(granted_qos))
 
 def on_message(client, userdata, msg):
-    print("Message received on topic "+msg.topic + " with QoS " + str(msg.qos) + " and payload " + str(msg.payload))
-
-#def on_message(client, userdata, message):
-#    print("message received " ,str(message.payload.decode("utf-8")))
-#    print("message topic=",message.topic)
-#    print("message qos=",message.qos)
-#    print("message retain flag=",message.retain)
+#    print("Message received on topic "+msg.topic + " with QoS " + str(msg.qos) + " and payload " + str(msg.payload))
+    print('[Topic:\t\t] %s' % (msg.topic))
+    print('[QoS:\t\t] %s' % (str(msg.qos)))
+    print('[Data:\t\t] %s' % (str(msg.payload.decode("utf-8"))))
+    print('[Retain flag:\t] %s' % (msg.retain))
 
 def on_log(client, userdata, level, string):
     print(string)
 
-broker_address=''
+broker_address='91.238.227.244'
 broker_port='1883'
 topic='#'
 client_id='dbexport'
