@@ -1,15 +1,14 @@
 import paho.mqtt.client as mqtt
 import time
+import sqlite3
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
         print("Connected successfully.")
-#        printLine()
-#        printMsg("Address:\t ] %s" % (broker_address))
-#        printMsg("Port:\t\t ] %s" % (broker_port))
-#        printMsg("Username:\t ] %s" % (sUsername))
-#        printMsg("Connected to server")
-#        printLine()
+#        print("[Address:\t ] %s" % (broker_address))
+#        print("[Port:\t\t ] %s" % (broker_port))
+#        print("[Username:\t ] %s" % (UserName))
+#        print("[Status:\t] Connected to server")
     else:
     	print("Connection failed. rc= "+str(rc))
 
@@ -22,15 +21,21 @@ def on_message(client, userdata, msg):
     print('[QoS:\t\t] %s' % (str(msg.qos)))
     print('[Data:\t\t] %s' % (str(msg.payload.decode("utf-8"))))
     print('[Retain flag:\t] %s' % (msg.retain))
+    conn = sqlite3.connect(dbname)
+    curs = conn.cursor()
+    curs.execute('insert into messages (topic, data) values (?, ?)', [msg.topic, msg.payload])
+    curs.close()
+    conn.close()
 
 def on_log(client, userdata, level, string):
     print(string)
 
-broker_address=''
+broker_address='91.238.227.244'
 broker_port='1883'
 topic='#'
 client_id='dbexport'
 keep_alive_interval = 45
+dbname='sem365.db'
 mqttc = mqtt.Client()
 # Assign event callbacks
 mqttc.on_message = on_message
