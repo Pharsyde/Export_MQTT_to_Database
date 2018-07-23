@@ -23,7 +23,8 @@ def on_message(client, userdata, msg):
     print('[Retain flag:\t] %s' % (msg.retain))
     conn = sqlite3.connect(dbname)
     curs = conn.cursor()
-    curs.execute('insert into messages (topic, data) values (?, ?)', [msg.topic, msg.payload])
+    curs.execute('insert into messages (topic, message) values (?, ?)', [msg.topic, msg.payload])
+    conn.commit()
     curs.close()
     conn.close()
 
@@ -47,18 +48,17 @@ mqttc.on_log = on_log
 #mqttc.username_pw_set(UserName, Password)
 mqttc.connect(broker_address, broker_port, int(keep_alive_interval))
 
+client.loop_start()
 # Start subscribe, with QoS level 0
 mqttc.subscribe(topic, 0)
 
-mqttc.loop_forever()
+#mqttc.loop_forever()
 
 #rc = 0
 #while rc == 0:
 #    rc = mqttc.loop()
 #print("rc: " + str(rc))
 
-
-#client.loop_start()
 #mqttc.subscribe(topic, 0)
-#time.sleep(4)
-#client.loop_stop()
+time.sleep(10)
+client.loop_stop()
