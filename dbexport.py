@@ -31,12 +31,12 @@ def on_message(client, userdata, msg):
 def on_log(client, userdata, level, string):
     print(string)
 
-broker_address='91.238.227.244'
+broker_address='localhost'
 broker_port='1883'
 topic='#'
 client_id='dbexport'
 keep_alive_interval = 45
-dbname='sem365.db'
+dbname='mqtt.db'
 mqttc = mqtt.Client()
 # Assign event callbacks
 mqttc.on_message = on_message
